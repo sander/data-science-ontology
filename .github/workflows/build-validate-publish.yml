@@ -26,9 +26,9 @@ jobs:
       env:
         LANG: en_US.UTF-8
         CI: true
-    - name: Publish documents to CouchDB database
-      if: env.COUCH_URL && github.event_name == 'push' && github.ref == 'refs/heads/master'
+    - name: Build JSON-LD
       run: |
-        mkdir -p ~/.ccurl && touch ~/.ccurl/keycache.json
-        npm run clean-couchdb
-        npm run upload-couchdb
+        clj -Sdeps "{:deps {ontology-linker {:git/url \"https://github.com/sander/ontology-linker\" :sha \"0caaacda6928cde9a6704ba3daf550c9d8cc2115\"}}}" \
+          -e "(use 'nl.sanderdijkhuis.ontology.linker) (build-linked-data! \"/home/runner/work/datascienceontology/datascienceontology/build\" \"/home/runner/work/datascienceontology/datascienceontology/json-ld\")"
+    - name: Verify result visually
+      run: cat /home/runner/work/datascienceontology/datascienceontology/json-ld/index.json
