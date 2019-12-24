@@ -6,8 +6,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      COUCH_URL: ${{ secrets.COUCH_URL }}
-      IAM_API_KEY: ${{ secrets.IAM_API_KEY }}
+      PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
+      PINATA_API_SECRET: ${{ secrets.PINATA_API_SECRET }}
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-java@v1
@@ -36,5 +36,6 @@ jobs:
       run: |
         clojure -Sdeps "{:deps {ontology-linker {:git/url \"https://github.com/sander/ontology-linker\" :sha \"0caaacda6928cde9a6704ba3daf550c9d8cc2115\"}}}" \
           -e "(use 'nl.sanderdijkhuis.ontology.linker) (build-linked-data! \"/home/runner/work/datascienceontology/datascienceontology/build\" \"/home/runner/work/datascienceontology/datascienceontology/json-ld\")"
-    - name: Verify result visually
-      run: cat /home/runner/work/datascienceontology/datascienceontology/json-ld/index.json
+    - name: Publish on IPFS
+      run: |
+        cd /home/runner/work/datascienceontology/datacienceontology && find pub -type -f -print0 | xargs -0 -I % echo -F"\"file=@%;filename=%\"" | sed 's/"/\\"/g' | xargs | xargs curl https://api.pinata.cloud/pinning/pinFileToIPFS -H pinata_api_key:$PINATA_API_KEY -H pinata_secret_api_key:$PINATA_API_SECRET
