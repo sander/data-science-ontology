@@ -38,4 +38,4 @@ jobs:
           -e "(use 'nl.sanderdijkhuis.ontology.linker) (build-linked-data! \"/home/runner/work/datascienceontology/datascienceontology/build\" \"/home/runner/work/datascienceontology/datascienceontology/json-ld\")"
     - name: Publish on IPFS
       run: |
-        cd /home/runner/work/datascienceontology/datascienceontology && find pub -type -f -print0 | xargs -0 -I % echo -F"\"file=@%;filename=%\"" | sed 's/"/\\"/g' | xargs | xargs curl https://api.pinata.cloud/pinning/pinFileToIPFS -H pinata_api_key:$PINATA_API_KEY -H pinata_secret_api_key:$PINATA_API_SECRET
+        cd /home/runner/work/datascienceontology/datascienceontology && find pub -type f -print0 | xargs -0 -I % echo -F"\"file=@%;filename=%\"" | sed 's/"/\\"/g' | xargs | xargs curl https://api.pinata.cloud/pinning/pinFileToIPFS -H pinata_api_key:$PINATA_API_KEY -H pinata_secret_api_key:$PINATA_API_SECRET
