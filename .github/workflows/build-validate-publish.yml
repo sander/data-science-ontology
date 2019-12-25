@@ -37,10 +37,10 @@ jobs:
     - name: Build JSON-LD
       run: |
         clojure -Sdeps "{:deps {ontology-linker {:git/url \"https://github.com/sander/ontology-linker\" :sha \"e3a1fbeb0cb20a80d076eef22670009e02c4caab\"}}}" \
-          -e "(use 'nl.sanderdijkhuis.ontology.linker) (build-linked-data! \"/home/runner/work/datascienceontology/datascienceontology/build\" \"/home/runner/work/datascienceontology/datascienceontology/json-ld\")"
+          -e "(use 'nl.sanderdijkhuis.ontology.linker) (build-linked-data! \"/home/runner/work/data-science-ontology/data-science-ontology/build\" \"/home/runner/work/data-science-ontology/data-science-ontology/json-ld\")"
     - run: |
         echo IPFS_DEPLOY_CLOUDFLARE__API_EMAIL=$IPFS_DEPLOY_CLOUDFLARE__API_EMAIL >> .env
         echo IPFS_DEPLOY_CLOUDFLARE__API_KEY=$IPFS_DEPLOY_CLOUDFLARE__API_KEY >> .env
         echo IPFS_DEPLOY_CLOUDFLARE__API_ZONE=$IPFS_DEPLOY_CLOUDFLARE__API_ZONE >> .env
         echo IPFS_DEPLOY_CLOUDFLARE__API_RECORD=$IPFS_DEPLOY_CLOUDFLARE__API_RECORD >> .env
-        npx ipfs-deploy -d cloudflare json-ld
+        npx ipfs-deploy -d cloudflare ~/work/data-science-ontology/data-science-ontology/json-ld
