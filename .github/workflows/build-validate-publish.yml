@@ -6,8 +6,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      PINATA_API_KEY: ${{ secrets.PINATA_API_KEY }}
-      PINATA_API_SECRET: ${{ secrets.PINATA_API_SECRET }}
+      IPFS_DEPLOY_CLOUDFLARE__API_EMAIL: ${{ secrets.IPFS_DEPLOY_CLOUDFLARE__API_EMAIL }}
+      IPFS_DEPLOY_CLOUDFLARE__API_KEY: ${{ secrets.IPFS_DEPLOY_CLOUDFLARE__API_KEY }}
+      IPFS_DEPLOY_CLOUDFLARE__ZONE: sanderdijkhuis.nl
+      IPFS_DEPLOY_CLOUDFLARE__RECORD: _dnslink.data-science-ontology.sanderdijkhuis.nl
     steps:
     - uses: actions/checkout@v1
     - uses: actions/setup-java@v1
@@ -36,6 +38,9 @@ jobs:
       run: |
         clojure -Sdeps "{:deps {ontology-linker {:git/url \"https://github.com/sander/ontology-linker\" :sha \"e3a1fbeb0cb20a80d076eef22670009e02c4caab\"}}}" \
           -e "(use 'nl.sanderdijkhuis.ontology.linker) (build-linked-data! \"/home/runner/work/datascienceontology/datascienceontology/build\" \"/home/runner/work/datascienceontology/datascienceontology/json-ld\")"
-    - name: Publish on IPFS
-      run: |
-        cd /home/runner/work/datascienceontology/datascienceontology && find json-ld -type f -print0 | xargs -0 -I % echo -F"\"file=@%;filename=%\"" | sed 's/"/\\"/g' | xargs | xargs curl https://api.pinata.cloud/pinning/pinFileToIPFS -H pinata_api_key:$PINATA_API_KEY -H pinata_secret_api_key:$PINATA_API_SECRET -f
+    - run: |
+        echo IPFS_DEPLOY_CLOUDFLARE__API_EMAIL=$IPFS_DEPLOY_CLOUDFLARE__API_EMAIL >> .env
+        echo IPFS_DEPLOY_CLOUDFLARE__API_KEY=$IPFS_DEPLOY_CLOUDFLARE__API_KEY >> .env
+        echo IPFS_DEPLOY_CLOUDFLARE__API_ZONE=$IPFS_DEPLOY_CLOUDFLARE__API_ZONE >> .env
+        echo IPFS_DEPLOY_CLOUDFLARE__API_RECORD=$IPFS_DEPLOY_CLOUDFLARE__API_RECORD >> .env
+        npx ipfs-deploy -d cloudflare json-ld
