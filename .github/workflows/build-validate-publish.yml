@@ -36,7 +36,7 @@ jobs:
         CI: true
     - name: Build JSON-LD
       run: |
-        clojure -Sdeps "{:deps {ontology-linker {:git/url \"https://github.com/sander/ontology-linker\" :sha \"e3a1fbeb0cb20a80d076eef22670009e02c4caab\"}}}" \
+        clojure -Sdeps "{:deps {ontology-linker {:git/url \"https://github.com/sander/ontology-linker\" :sha \"325f26bd7cc45b0a81830a6a05e86f6881f418ce\"}}}" \
           -e "(use 'nl.sanderdijkhuis.ontology.linker) (build-linked-data! \"/home/runner/work/data-science-ontology/data-science-ontology/build\" \"/home/runner/work/data-science-ontology/data-science-ontology/json-ld\")"
     - run: |
         echo IPFS_DEPLOY_CLOUDFLARE__API_EMAIL=$IPFS_DEPLOY_CLOUDFLARE__API_EMAIL >> .env
