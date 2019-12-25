@@ -34,7 +34,7 @@ jobs:
         CI: true
     - name: Build JSON-LD
       run: |
-        clojure -Sdeps "{:deps {ontology-linker {:git/url \"https://github.com/sander/ontology-linker\" :sha \"0caaacda6928cde9a6704ba3daf550c9d8cc2115\"}}}" \
+        clojure -Sdeps "{:deps {ontology-linker {:git/url \"https://github.com/sander/ontology-linker\" :sha \"e3a1fbeb0cb20a80d076eef22670009e02c4caab\"}}}" \
           -e "(use 'nl.sanderdijkhuis.ontology.linker) (build-linked-data! \"/home/runner/work/datascienceontology/datascienceontology/build\" \"/home/runner/work/datascienceontology/datascienceontology/json-ld\")"
     - name: Publish on IPFS
       run: |
