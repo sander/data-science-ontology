@@ -34,7 +34,7 @@ jobs:
       env:
         LANG: en_US.UTF-8
         CI: true
-    - name: Build JSON-LD
+    - name: Build JSON-LD documents
       run: |
         clojure -Sdeps "{:deps {ontology-linker {:git/url \"https://github.com/sander/ontology-linker\" :sha \"dc2ed488529098b44806da8dad5b5691b1b31ae5\"}}}" \
           -e "(use 'nl.sanderdijkhuis.ontology.next) (build-linked-data! \"/home/runner/work/data-science-ontology/data-science-ontology/build\" \"/home/runner/work/data-science-ontology/data-science-ontology/json-ld\")"
